@@ -1,10 +1,10 @@
 {
   "name": "cosmcli",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
     "prepublishOnly": "pnpm run build"
@@ -19,7 +19,10 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@cosmjs/proto-signing": "0.33.0",
+    "@cosmjs/stargate": "0.33.0",
     "chalk": "^5.4.1",
-    "commander": "^13.1.0"
+    "commander": "^13.1.0",
+    "stridejs": "^0.13.0"
   }
 }
