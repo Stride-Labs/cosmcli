@@ -68,9 +68,9 @@ program
         const [{ address }] = await signer.getAccounts();
 
         if (verbose) {
-          console.log(`Using sender address: ${address}`);
-          console.log(`Initiating IBC transfer from ${address} to ${receiver}`);
-          console.log(`Amount: ${amount}, Channel: ${srcChannel}, Port: ${srcPort}`);
+          console.error(`Using sender address: ${address}`);
+          console.error(`Initiating IBC transfer from ${address} to ${receiver}`);
+          console.error(`Amount: ${amount}, Channel: ${srcChannel}, Port: ${srcPort}`);
         }
         const client = await SigningStargateClient.connectWithSigner(rpc, signer, {
           gasPrice: GasPrice.fromString(gasPrice),
@@ -91,12 +91,12 @@ program
         });
 
         if (verbose) {
-          console.log("Signing and broadcasting transaction...");
+          console.error("Signing and broadcasting transaction...");
         }
         const tx = await client.signAndBroadcast(address, [msg], Number(gasAdjustment));
         if (tx.code === 0) {
           if (verbose) {
-            console.log(`Transaction successful! Hash: ${tx.transactionHash}`);
+            console.error(`Transaction successful! Hash: ${tx.transactionHash}`);
           }
         } else {
           console.error(`Transaction failed with code ${tx.code}: ${tx.rawLog}`);
@@ -104,7 +104,7 @@ program
         }
 
         if (verbose) {
-          console.log("Waiting for IBC acknowledgement...");
+          console.error("Waiting for IBC acknowledgement...");
         }
 
         const ibcAck = await getTxIbcResponses(client, tx)[0];
@@ -114,7 +114,8 @@ program
           ibcAck.tx.code === 0 &&
           getValueFromEvents(ibcAck.tx.events, "fungible_token_packet.success") === "\u0001"
         ) {
-          console.log(`IBC transfer successful!`);
+          console.log(JSON.stringify({ tx: tx.transactionHash, ibcAck: ibcAck.tx.hash }));
+          process.exit(0);
         } else {
           console.error("IBC transfer failed during relay");
           if (verbose) {
