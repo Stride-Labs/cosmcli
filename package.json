@@ -1,8 +1,11 @@
 {
   "name": "cosmcli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
+  "bin": {
+    "cosmcli": "./dist/index.js"
+  },
   "scripts": {
     "build": "rm -rf dist && tsc",
     "dev": "ts-node src/index.ts",
