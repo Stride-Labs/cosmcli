@@ -114,7 +114,7 @@ program
           ibcAck.tx.code === 0 &&
           getValueFromEvents(ibcAck.tx.events, "fungible_token_packet.success") === "\u0001"
         ) {
-          console.log(JSON.stringify({ tx: tx.transactionHash, ibcAck: ibcAck.tx.hash }));
+          console.log(JSON.stringify({ tx: tx.transactionHash, ibc_ack: ibcAck.tx.hash }));
           process.exit(0);
         } else {
           console.error("IBC transfer failed during relay");
